@@ -90,8 +90,8 @@ class D3Svg {
     setSvgGrabMoveEnd () {
         this._drag = null;
 
-        if(this.callbacks.moveEndSvg)
-            this.callbacks.moveEndSvg({
+        if(this._callbacks.moveEndSvg)
+            this._callbacks.moveEndSvg({
                 x: this._x,
                 y: this._y,
                 z: 0
@@ -103,7 +103,7 @@ class D3Svg {
         this._scale = transform.k;
         this.refreshViewBox();
 
-        if(this.callbacks.zoomSvg)
-            this.callbacks.zoomSvg(this._scale);
+        if(this._callbacks.zoomSvg)
+            this._callbacks.zoomSvg(this._scale);
     }
 }
