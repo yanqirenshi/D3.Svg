@@ -16,6 +16,12 @@ class D3Svg {
 
         this._scale = params.scale;
 
+        this._callbacks = {
+            moveEndSvg: null,
+            zoomSvg: null,
+            clickSvg: null
+        };
+
         this.refreshViewBox();
     }
     initViewBox() {
