@@ -2,7 +2,7 @@
 
 ## Usage
 
-Load js file.
+### Load js file.
 
 ```html
 <!DOCTYPE html>
@@ -20,7 +20,7 @@ Load js file.
 
 ```
 
-Make D3Svg instance.
+### Make D3Svg instance.
 
 ```html
 <!-- ------------------- -->
@@ -45,6 +45,16 @@ Make D3Svg instance.
      });
     </script>
 </stage>
+```
+
+### Svg
+
+```html
+// Get
+this.d3svg.Svg();
+
+// Set
+this.d3svg.Svg(d3.select("stage svg"));
 ```
 
 ## Dependencies
