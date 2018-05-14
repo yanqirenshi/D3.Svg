@@ -6,7 +6,7 @@ class D3Svg {
         if (!params.svg)
             throw new Error("svg is empty");
 
-        this.setSvg(params.svg);
+        this.Svg(params.svg);
 
         this._x = params.x ? params.x : 0;
         this._y = params.y ? params.y : 0;
@@ -33,7 +33,9 @@ class D3Svg {
 
         this.refreshViewBox();
     }
-    setSvg (svg) {
+    Svg (svg) {
+        if (!svg) return this._svg;
+
         this._svg = svg;
 
         let self = this;
@@ -48,6 +50,8 @@ class D3Svg {
             if(this._callbacks.clickSvg)
                 this._callbacks.clickSvg();
         });
+
+        return this._svg;
     }
     setSize (w,h) {
         this._w = w ? w : 0;
