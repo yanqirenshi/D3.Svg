@@ -22,16 +22,7 @@ class D3Svg {
             clickSvg: null
         };
 
-        this.refreshViewBox();
-    }
-    initViewBox() {
-        let w = this._w;
-        let h = this._h;
-
-        this._x = Math.floor(w/2 * -1);
-        this._y = Math.floor(h/2 * -1);
-
-        this.refreshViewBox();
+        this.moveCenter();
     }
     Svg (svg) {
         if (!svg) return this._svg;
@@ -53,14 +44,27 @@ class D3Svg {
 
         return this._svg;
     }
-    setSize (w,h) {
-        this._w = w ? w : 0;
-        this._h = h ? h : 0;
+    /** **************************************************************** *
+     * util
+     * **************************************************************** */
+    raiseWarning (msg) {
+        try {
+            throw null;
+        } catch (w) {
+            console.log(msg);
+        }
+    }
+    /** **************************************************************** *
+     * ViewBox
+     * **************************************************************** */
+    initViewBox() {
+        let w = this._w;
+        let h = this._h;
 
-        this._svg.attr('height', h + 'px');
-        this._svg.attr('width',  w  + 'px');
+        this._x = Math.floor(w/2 * -1);
+        this._y = Math.floor(h/2 * -1);
 
-        this.initViewBox();
+        this.refreshViewBox();
     }
     refreshViewBox () {
         var scale = this._scale;
@@ -78,6 +82,49 @@ class D3Svg {
 
         this._svg.attr('viewBox', viewbox);
     }
+    moveCenter () {
+        this.raiseWarning('WARNING: このメソッドは廃棄予定です。 lookAt を利用するようにしてください。');
+
+        var scale = this._scale;
+
+        var x = this._x,
+            y = this._y;
+        var orgW = this._w,
+            orgH = this._h;
+        var w = Math.floor(orgW * scale),
+            h = Math.floor(orgH * scale);
+        var viewbox = ''
+            + (x + Math.floor(w/2)) + ' '
+            + (y + Math.floor(h/2)) + ' '
+            + w + ' '
+            + h;
+
+        this._svg.attr('viewBox', viewbox);
+    }
+    lookAt (x,y,z) {
+        // x,y,z を中心としたビューに移動する。
+        return [x,y,z];
+    }
+    /** **************************************************************** *
+     * Accessor
+     * **************************************************************** */
+    x () { return this._x; }
+    y () { return this._x; }
+    w () { return this._w; }
+    h () { return this._h; }
+    scale () { return this._scale; }
+    setSize (w,h) {
+        this._w = w ? w : 0;
+        this._h = h ? h : 0;
+
+        this._svg.attr('height', h + 'px');
+        this._svg.attr('width',  w  + 'px');
+
+        this.initViewBox();
+    }
+    /** **************************************************************** *
+     * MOOVE Camera
+     * **************************************************************** */
     setSvgGrabMoveStart (event) {
         this._drag = {
             x: event.x,
@@ -108,6 +155,9 @@ class D3Svg {
             });
 
     }
+    /** **************************************************************** *
+     * ZOOM Camera
+     * **************************************************************** */
     setSvgGrabZoom (event) {
         let transform = event.transform;
         this._scale = transform.k;
