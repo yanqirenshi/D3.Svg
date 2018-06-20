@@ -16,11 +16,12 @@ class D3Svg {
 
         this._scale = params.scale;
 
-        this._callbacks = {
-            moveEndSvg: null,
-            zoomSvg: null,
-            clickSvg: null
-        };
+        let callbacks = params.callbacks;
+        if (!callbacks.moveEndSvg) callbacks.moveEndSvg = null;
+        if (!callbacks.zoomSvg)    callbacks.zoomSvg = null;
+        if (!callbacks.clickSvg)   callbacks.clickSvg = null;
+
+        this._callbacks = callbacks;
 
         this.moveCenter();
     }
