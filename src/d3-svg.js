@@ -6,7 +6,6 @@ class D3Svg {
         if (!params.svg)
             throw new Error("svg is empty");
 
-        this.Svg(params.svg);
 
         this._x = params.x ? params.x : 0;
         this._y = params.y ? params.y : 0;
@@ -24,12 +23,17 @@ class D3Svg {
 
         this._callbacks = callbacks;
 
-        this.moveCenter();
+        this.Svg(params.svg);
+
+        this.refreshViewBox();
     }
     Svg (svg) {
         if (!svg) return this._svg;
 
         this._svg = svg;
+
+        this._svg.attr('width', this._w);
+        this._svg.attr('height', this._h);
 
         let self = this;
         this._svg.call(d3.drag()
@@ -84,29 +88,6 @@ class D3Svg {
 
         this._svg.attr('viewBox', viewbox);
     }
-    moveCenter () {
-        this.raiseWarning('WARNING: このメソッドは廃棄予定です。 lookAt を利用するようにしてください。');
-
-        var scale = this._scale;
-
-        var x = this._x,
-            y = this._y;
-        var orgW = this._w,
-            orgH = this._h;
-        var w = Math.floor(orgW * scale),
-            h = Math.floor(orgH * scale);
-        var viewbox = ''
-            + (x + Math.floor(w/2)) + ' '
-            + (y + Math.floor(h/2)) + ' '
-            + w + ' '
-            + h;
-
-        this._svg.attr('viewBox', viewbox);
-    }
-    lookAt (x,y,z) {
-        // x,y,z を中心としたビューに移動する。
-        return [x,y,z];
-    }
     /** **************************************************************** *
      * Accessor
      * **************************************************************** */
@@ -129,15 +110,15 @@ class D3Svg {
      * **************************************************************** */
     setSvgGrabMoveStart (event) {
         this._drag = {
-            x: event.x,
-            y: event.y
+            x: event.x * this._scale,
+            y: event.y * this._scale
         };
     }
     setSvgGrabMoveDrag (event) {
         var startX = this._drag.x,
             startY = this._drag.y;
-        var x = event.x,
-            y = event.y;
+        var x = event.x * this._scale,
+            y = event.y * this._scale;
 
         this._x -= (x - startX);
         this._y -= (y - startY);
@@ -162,6 +143,7 @@ class D3Svg {
      * **************************************************************** */
     setSvgGrabZoom (event) {
         let transform = event.transform;
+
         this._scale = transform.k;
         this.refreshViewBox();
 
