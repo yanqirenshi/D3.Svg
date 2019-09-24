@@ -1,5 +1,5 @@
 class D3Svg {
-    constructor(params) {
+    constructor (params) {
         if (!d3)
             throw new Error("d3 is empty");
 
@@ -15,18 +15,36 @@ class D3Svg {
 
         this._scale = params.scale;
 
-        let callbacks = params.callbacks;
-        if (!callbacks) callbacks = {};
-        if (!callbacks.moveEndSvg) callbacks.moveEndSvg = null;
-        if (!callbacks.zoomSvg)    callbacks.zoomSvg = null;
-        if (!callbacks.clickSvg)   callbacks.clickSvg = null;
-
-        this._callbacks = callbacks;
+        this._callbacks = this.initCallbacks (params);
 
         this.Svg(params.svg);
 
         this.refreshViewBox();
     }
+    initCallbacks (params) {
+        let callbacks = params.callbacks;
+        let default_callbaks = {
+            click: null,
+            move: {
+                end: null,
+            },
+            zoom: null,
+        };
+
+        if (!callbacks)
+            return default_callbaks;
+
+        if (callbacks.move.end)
+            default_callbaks.move.end = callbacks.move.end;
+
+        if (callbacks.zoom)
+            default_callbaks.zoom =callbacks.zoom;
+
+        if (callbacks.click)
+            default_callbaks.click = callbacks.click;
+
+        return default_callbaks;
+    };
     Svg (svg) {
         if (!svg) return this._svg;
 
@@ -37,15 +55,15 @@ class D3Svg {
 
         let self = this;
         this._svg.call(d3.drag()
-                       .on('start', function () { self.setSvgGrabMoveStart(d3.event); })
+                       .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
                        .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
                        .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); }));
 
         this._svg.call(d3.zoom().on("zoom", function () { self.setSvgGrabZoom(d3.event); }));
 
         this._svg.on('click', () => {
-            if(this._callbacks.clickSvg)
-                this._callbacks.clickSvg();
+            if(this._callbacks.click)
+                this._callbacks.click();
         });
 
         return this._svg;
@@ -130,8 +148,8 @@ class D3Svg {
     setSvgGrabMoveEnd () {
         this._drag = null;
 
-        if(this._callbacks.moveEndSvg)
-            this._callbacks.moveEndSvg({
+        if(this._callbacks.move.end)
+            this._callbacks.move.end({
                 x: this._x,
                 y: this._y,
                 z: 0
@@ -147,7 +165,7 @@ class D3Svg {
         this._scale = transform.k;
         this.refreshViewBox();
 
-        if(this._callbacks.zoomSvg)
-            this._callbacks.zoomSvg(this._scale);
+        if(this._callbacks.zoom)
+            this._callbacks.zoom(this._scale);
     }
 }
