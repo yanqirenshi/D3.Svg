@@ -91,14 +91,18 @@ class D3Svg {
         this.refreshViewBox();
     }
     refreshViewBox () {
-        var scale = this._scale;
-        var x = this._x,
+        let scale = this._scale;
+
+        let x = this._x,
             y = this._y;
-        var orgW = this._w,
+
+        let orgW = this._w,
             orgH = this._h;
-        var w = Math.floor(orgW * scale),
+
+        let w = Math.floor(orgW * scale),
             h = Math.floor(orgH * scale);
-        var viewbox = ''
+
+        let viewbox = ''
             + (x + Math.floor((orgW - w)/2)) + ' '
             + (y + Math.floor((orgH - h)/2)) + ' '
             + w + ' '
@@ -133,9 +137,9 @@ class D3Svg {
         };
     }
     setSvgGrabMoveDrag (event) {
-        var startX = this._drag.x,
+        let startX = this._drag.x,
             startY = this._drag.y;
-        var x = event.x * this._scale,
+        let x = event.x * this._scale,
             y = event.y * this._scale;
 
         this._x -= (x - startX);
