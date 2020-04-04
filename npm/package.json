@@ -1,0 +1,22 @@
+{
+  "name": "d3.svg",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yanqirenshi/D3.Svg.git"
+  },
+  "author": "yanqirenshi@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanqirenshi/D3.Svg/issues"
+  },
+  "homepage": "https://github.com/yanqirenshi/D3.Svg#readme",
+  "dependencies": {
+    "d3": "^5.15.1"
+  }
+}
