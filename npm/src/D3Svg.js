@@ -1,11 +1,75 @@
+import * as d3 from 'd3';
+
+class Conditioner {
+    raiseWarning (msg) {
+        try {
+            throw null;
+        } catch (w) {
+            console.log(msg);
+        }
+    }
+}
+
+class ViewBox {
+    center (w, h) {
+        return {
+            x: Math.floor( w/2 * -1 ),
+            y: Math.floor( h/2 * -1 ),
+        };
+    }
+    refresh (svg, x, y, w, h, scale) {
+        let w_scaled = Math.floor(w * scale),
+            h_scaled = Math.floor(h * scale);
+
+        let attr = ''
+            + (x + Math.floor((w - w_scaled)/2)) + ' '
+            + (y + Math.floor((h - h_scaled)/2)) + ' '
+            + w_scaled + ' '
+            + h_scaled;
+
+        svg.attr('viewBox', attr);
+    }
+}
+
+class Camera {
+    constructor () {
+        this._drag = null;
+    }
+    moveStart (x, y, scale) {
+        this._drag = {
+            x: x * scale,
+            y: y * scale
+        };
+    }
+    moveDrag (x, y, scale) {
+        let startX = this._drag.x,
+            startY = this._drag.y;
+
+        this._drag.x = x;
+        this._drag.y = y;
+
+        return {
+            x: x - (x - startX),
+            y: y - (y - startY),
+        };
+    }
+}
+
 class D3Svg {
+    // TODO: コンストラクタで初期化せなアカンのは良くないと思う。
     constructor (params) {
+        this._conditioner = new Conditioner();
+        this._viewbox = new ViewBox();
+        this._camera = new Camera();
+
+        this.init(params);
+    }
+    init (params) {
         if (!d3)
             throw new Error("d3 is empty");
 
         if (!params.svg)
             throw new Error("svg is empty");
-
 
         this._x = params.x ? params.x : 0;
         this._y = params.y ? params.y : 0;
@@ -46,7 +110,8 @@ class D3Svg {
         return default_callbaks;
     };
     Svg (svg) {
-        if (!svg) return this._svg;
+        if (!svg)
+            return this._svg;
 
         this._svg = svg;
 
@@ -72,49 +137,38 @@ class D3Svg {
      * util
      * **************************************************************** */
     raiseWarning (msg) {
-        try {
-            throw null;
-        } catch (w) {
-            console.log(msg);
-        }
+        this._conditioner(msg);
     }
     /** **************************************************************** *
      * ViewBox
      * **************************************************************** */
     initViewBox() {
-        let w = this._w;
-        let h = this._h;
+        let viewbox = this._viewbox;
 
-        this._x = Math.floor(w/2 * -1);
-        this._y = Math.floor(h/2 * -1);
+        let center = viewbox(this._w, this._h);
+
+        this._x = center.x;
+        this._y = center.y;
 
         this.refreshViewBox();
     }
     refreshViewBox () {
-        let scale = this._scale;
+        let viewbox = this._viewbox;
 
-        let x = this._x,
-            y = this._y;
-
-        let orgW = this._w,
-            orgH = this._h;
-
-        let w = Math.floor(orgW * scale),
-            h = Math.floor(orgH * scale);
-
-        let viewbox = ''
-            + (x + Math.floor((orgW - w)/2)) + ' '
-            + (y + Math.floor((orgH - h)/2)) + ' '
-            + w + ' '
-            + h;
-
-        this._svg.attr('viewBox', viewbox);
+        viewbox.refresh(
+            this._svg,
+            this._x, this._y,
+            this._w, this._h,
+            this._scale
+        );
     }
     /** **************************************************************** *
      * Accessor
      * **************************************************************** */
     x () { return this._x; }
-    y () { return this._x; }
+    y () {
+        return this._y;
+    }
     w () { return this._w; }
     h () { return this._h; }
     scale () { return this._scale; }
