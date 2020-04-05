@@ -11,6 +11,21 @@ npm i @yanqirenshi/d3.svg
 
 ## Usage
 
+```
+import D3Svg from '@yanqirenshi/d3.svg'
+
+    let params = {
+        svg:  {...},
+        x: 1,
+        y: 2,
+        w: 30,
+        h: 40,
+        scale: 5.6
+    };
+
+new D3Svg().init(params);
+```
+
 ### Load js file.
 
 ```html
@@ -69,6 +84,7 @@ this.d3svg.Svg(d3.select("stage svg"));
 ## Dependencies
 
 - [D3.js](https://d3js.org/)
+- [Jest](https://jestjs.io/)
 
 ## Author
 

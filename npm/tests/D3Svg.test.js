@@ -4,7 +4,6 @@ import MockSvgD3Element from './MockSvgD3Element.js';
 
 test('constructor', () => {
     let params = {
-        d3: {},
         svg: new MockSvgD3Element(),
         x: 1,
         y: 2,
