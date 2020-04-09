@@ -8,6 +8,11 @@ class MockSvgD3Element {
 
         return this[key];
     }
+    transition() {
+        return {
+            call: () => { return true; },
+        };
+    }
     call () { return true; }
     on () { return true; }
 }

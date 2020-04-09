@@ -21,9 +21,9 @@ class ViewBox {
         let w_scaled = Math.floor(w * scale),
             h_scaled = Math.floor(h * scale);
 
-        let attr = ''
-            + (x + Math.floor((w - w_scaled)/2)) + ' '
-            + (y + Math.floor((h - h_scaled)/2)) + ' '
+        var attr = ''
+            + (x - Math.floor(w_scaled/2)) + ' '
+            + (y - Math.floor(h_scaled/2)) + ' '
             + w_scaled + ' '
             + h_scaled;
 
@@ -34,30 +34,61 @@ class ViewBox {
 class Camera {
     constructor () {
         this._drag = null;
+        this._look = { at: { x:0, y:0 } };
     }
-    moveStart (x, y, scale) {
+    init (params) {
+        if (!params)
+            return;
+
+        this.scale(params.scale);
+
+        this._look = params.look || { at: { x:0, y:0 } };
+    }
+    /** **************************************************************** *
+     * Accessor
+     * **************************************************************** */
+    look () {
+        return this._look;
+    }
+    scale (value) {
+        if (arguments.length > 0)
+            this._scale = value || 1;
+
+        return this._scale;
+    }
+    /** **************************************************************** *
+     * Move look at
+     * **************************************************************** */
+    moveStart (x, y) {
+        let scale = this._scale;
+
         this._drag = {
             x: x * scale,
             y: y * scale
         };
     }
-    moveDrag (x, y, scale) {
-        let startX = this._drag.x,
-            startY = this._drag.y;
+    moveDrag (x, y) {
+        let scale = this._scale;
 
-        this._drag.x = x;
-        this._drag.y = y;
+        let from_x = this._drag.x,
+            from_y = this._drag.y;
 
-        return {
-            x: x - (x - startX),
-            y: y - (y - startY),
-        };
+        let to_x = x * scale,
+            to_y = y * scale;
+
+        this._drag.x = to_x;
+        this._drag.y = to_y;
+
+        this._look.at.x -= (to_x - from_x);
+        this._look.at.y -= (to_y - from_y);
+    }
+    moveEnd () {
+        this._drag = null;
     }
 }
 
-class D3Svg {
-    // TODO: コンストラクタで初期化せなアカンのは良くないと思う。
-    constructor (params) {
+export default class D3Svg {
+    constructor(params) {
         this._conditioner = new Conditioner();
         this._viewbox = new ViewBox();
         this._camera = new Camera();
@@ -65,28 +96,25 @@ class D3Svg {
         this.init(params);
     }
     init (params) {
-        if (!d3)
-            throw new Error("d3 is empty");
+        this._d3_element = params.d3_element;
 
-        if (!params.svg)
-            throw new Error("svg is empty");
+        this._w = params.w;
+        this._h = params.h;
 
-        this._x = params.x ? params.x : 0;
-        this._y = params.y ? params.y : 0;
-
-        this._w = params.w ? params.w : 0;
-        this._h = params.h ? params.h : 0;
-
-        this._scale = params.scale;
+        this._camera.init({
+            look: params.look,
+            scale: params.scale,
+        });
 
         this._callbacks = this.initCallbacks (params);
 
-        this.Svg(params.svg);
+        this.initSvg();
 
         this.refreshViewBox();
     }
     initCallbacks (params) {
         let callbacks = params.callbacks;
+
         let default_callbaks = {
             click: null,
             move: {
@@ -102,31 +130,36 @@ class D3Svg {
             default_callbaks.move.end = callbacks.move.end;
 
         if (callbacks.zoom)
-            default_callbaks.zoom =callbacks.zoom;
+            default_callbaks.zoom = callbacks.zoom;
 
         if (callbacks.click)
             default_callbaks.click = callbacks.click;
 
         return default_callbaks;
     };
-    Svg (svg) {
-        if (!svg)
-            return this._svg;
+    initSvg () {
+        let svg = this._d3_element;
 
-        this._svg = svg;
-
-        this._svg.attr('width', this._w);
-        this._svg.attr('height', this._h);
+        svg.attr('width', this._w);
+        svg.attr('height', this._h);
 
         let self = this;
-        this._svg.call(d3.drag()
-                       .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
-                       .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
-                       .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); }));
 
-        this._svg.call(d3.zoom().on("zoom", function () { self.setSvgGrabZoom(d3.event); }));
+        svg.call(
+            d3.drag()
+                .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
+                .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
+                .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); })
+        );
 
-        this._svg.on('click', () => {
+        let zoom = d3.zoom()
+            .on("zoom", function () { self.setSvgGrabZoom(d3.event); });
+
+        svg.transition().call(zoom.scaleBy, this._camera.scale());
+
+        svg.call(zoom);
+
+        svg.on('click', () => {
             if(this._callbacks.click)
                 this._callbacks.click();
         });
@@ -134,77 +167,47 @@ class D3Svg {
         return this._svg;
     }
     /** **************************************************************** *
-     * util
+     * Accessor
      * **************************************************************** */
-    raiseWarning (msg) {
-        this._conditioner(msg);
+    w () {
+        return this._w;
+    }
+    h () {
+        return this._h;
     }
     /** **************************************************************** *
      * ViewBox
      * **************************************************************** */
-    initViewBox() {
-        let viewbox = this._viewbox;
-
-        let center = viewbox(this._w, this._h);
-
-        this._x = center.x;
-        this._y = center.y;
-
-        this.refreshViewBox();
-    }
     refreshViewBox () {
         let viewbox = this._viewbox;
 
+        let camera = this._camera;
+        let look_at = camera.look().at;
+
+        let scale = camera.scale();
+
         viewbox.refresh(
-            this._svg,
-            this._x, this._y,
-            this._w, this._h,
-            this._scale
+            this._d3_element,
+            look_at.x,
+            look_at.y,
+            window.innerWidth,
+            window.innerHeight,
+            scale,
         );
-    }
-    /** **************************************************************** *
-     * Accessor
-     * **************************************************************** */
-    x () { return this._x; }
-    y () {
-        return this._y;
-    }
-    w () { return this._w; }
-    h () { return this._h; }
-    scale () { return this._scale; }
-    setSize (w,h) {
-        this._w = w ? w : 0;
-        this._h = h ? h : 0;
-
-        this._svg.attr('height', h + 'px');
-        this._svg.attr('width',  w  + 'px');
-
-        this.initViewBox();
     }
     /** **************************************************************** *
      * MOOVE Camera
      * **************************************************************** */
     setSvgGrabMoveStart (event) {
-        this._drag = {
-            x: event.x * this._scale,
-            y: event.y * this._scale
-        };
+        this._camera.moveStart(event.x, event.y);
     }
     setSvgGrabMoveDrag (event) {
-        let startX = this._drag.x,
-            startY = this._drag.y;
-        let x = event.x * this._scale,
-            y = event.y * this._scale;
-
-        this._x -= (x - startX);
-        this._y -= (y - startY);
-        this._drag.x = x;
-        this._drag.y = y;
+        this._camera.moveDrag(event.x, event.y);
 
         this.refreshViewBox();
     }
     setSvgGrabMoveEnd () {
-        this._drag = null;
+        this._camera.moveEnd();
 
         if(this._callbacks.move.end)
             this._callbacks.move.end({
@@ -212,7 +215,6 @@ class D3Svg {
                 y: this._y,
                 z: 0
             });
-
     }
     /** **************************************************************** *
      * ZOOM Camera
@@ -220,12 +222,11 @@ class D3Svg {
     setSvgGrabZoom (event) {
         let transform = event.transform;
 
-        this._scale = transform.k;
+        this._camera.scale(transform.k);
+
         this.refreshViewBox();
 
-        if(this._callbacks.zoom)
-            this._callbacks.zoom(this._scale);
+        if(this._callbacks.zoomSvg)
+            this._callbacks.zoomSvg(this._scale);
     }
 }
-
-export default D3Svg;
