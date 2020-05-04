@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 class Conditioner {
     raiseWarning (msg) {
         try {
-            throw null;
+            console.log('Warn: ' + msg);
         } catch (w) {
             console.log(msg);
         }
@@ -93,10 +93,11 @@ export default class D3Svg {
         this._viewbox = new ViewBox();
         this._camera = new Camera();
 
-        this.init(params);
+        if (params)
+            this.init(params);
     }
     init (params) {
-        this._d3_element = params.d3_element;
+        this._d3_element = this.ensureD3Element(params.d3_element);
 
         this._w = params.w;
         this._h = params.h;
@@ -111,6 +112,8 @@ export default class D3Svg {
         this.initSvg();
 
         this.refreshViewBox();
+
+        return this;
     }
     initCallbacks (params) {
         let callbacks = params.callbacks;
@@ -166,9 +169,25 @@ export default class D3Svg {
 
         return this._svg;
     }
+    ensureD3Element (val) {
+        if (typeof val==='string')
+            return this.ensureD3Element(d3.select(val));
+
+        if (typeof val==='object' && val.constructor.name==='Selection') {
+            if (val.size()===0)
+                throw new Error('Not exist element.', val);
+
+            return val;
+        }
+
+        throw new Error('Bad Value.', val);
+    }
     /** **************************************************************** *
      * Accessor
      * **************************************************************** */
+    d3Element () {
+        return this._d3_element;
+    }
     w () {
         return this._w;
     }
