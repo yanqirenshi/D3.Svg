@@ -180,7 +180,11 @@ export default class D3Svg {
             return val;
         }
 
-        throw new Error('Bad Value.', val);
+        let msg = 'Not Supported element value type. value=' + val;
+
+        console.error([msg, val]);
+
+        throw new Error(msg);
     }
     /** **************************************************************** *
      * Accessor
