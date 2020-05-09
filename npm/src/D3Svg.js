@@ -182,7 +182,12 @@ export default class D3Svg {
 
         let msg = 'Not Supported element value type. value=' + val;
 
-        console.error([msg, val]);
+        console.error({
+            message: msg,
+            value: val,
+            type_of: typeof val,
+            class_of: val.constructor.name
+        });
 
         throw new Error(msg);
     }
