@@ -173,11 +173,15 @@ export default class D3Svg {
         if (typeof val==='string')
             return this.ensureD3Element(d3.select(val));
 
-        if (typeof val==='object' && val.constructor.name==='Selection') {
-            if (val.size()===0)
-                throw new Error('Not exist element.', val);
+        if (typeof val==='object') {
+            let class_name = val.constructor.name;
 
-            return val;
+            if (class_name==='Selection' || class_name==='ke') {
+                if (val.size()===0)
+                    throw new Error('Not exist element.', val);
+
+                return val;
+            }
         }
 
         let msg = 'Not Supported element value type. value=' + val;
