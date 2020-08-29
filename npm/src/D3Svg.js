@@ -95,6 +95,8 @@ export default class D3Svg {
 
         if (params)
             this.init(params);
+
+        this._initialized_at = null;
     }
     init (params) {
         this._d3_element = this.ensureD3Element(params.d3_element);
@@ -112,6 +114,8 @@ export default class D3Svg {
         this.initSvg();
 
         this.refreshViewBox();
+
+        this._initialized_at = new Date();
 
         return this;
     }
@@ -173,12 +177,8 @@ export default class D3Svg {
         if (typeof val==='string')
             return this.ensureD3Element(d3.select(val));
 
-        if (typeof val==='object') {
-            if (val.size()===0)
-                throw new Error('Not exist element.', val);
-
+        if (typeof val==='object')
             return val;
-        }
 
         let msg = 'Not Supported element value type. value=' + val;
 
@@ -190,6 +190,9 @@ export default class D3Svg {
         });
 
         throw new Error(msg);
+    }
+    isInitialized () {
+        return this._initialized_at ? true : false;
     }
     /** **************************************************************** *
      * Accessor
