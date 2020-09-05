@@ -92,17 +92,36 @@ export default class D3Svg {
         this._conditioner = new Conditioner();
         this._viewbox = new ViewBox();
         this._camera = new Camera();
+        this._callbacks = {};
+
+        this._initialized_at = null;
+
+        this._selector = null;
+        this._d3_element = null; //非推奨
+        this._w = null;
+        this._h = null;
 
         if (params)
             this.init(params);
-
-        this._initialized_at = null;
     }
     init (params) {
-        this._d3_element = this.ensureD3Element(params.d3_element);
+        const selector = params.selector;
+        const d3_element = params.d3_element;
+        if (selector) {
+            const type = typeof selector;
+            if (type!=="string")
+                throw new Error(`selector type is not string. selector=${selector}, type={type}`);
 
-        this._w = params.w;
-        this._h = params.h;
+            this._d3_element = this.ensureD3Element(selector);
+        } else if (d3_element) {
+            console.warn('d3_element は非推奨です。 selector を利用してください。');
+            this._d3_element = this.ensureD3Element(d3_element);
+        } else {
+            throw new Error(`selector and d3_element is empty. selector=${selector} d3_element=${d3_element}`);
+        }
+
+        if (this._w) this._w = params.w;
+        if (this._h) this._h = params.h;
 
         this._camera.init({
             look: params.look,
@@ -174,8 +193,10 @@ export default class D3Svg {
         return this._svg;
     }
     ensureD3Element (val) {
-        if (typeof val==='string')
+        if (typeof val==='string') {
+            this._selector = val;
             return this.ensureD3Element(d3.select(val));
+        }
 
         if (typeof val==='object')
             return val;
@@ -210,6 +231,19 @@ export default class D3Svg {
         this.d3Element()
             .attr('width', w || 0)
             .attr('height', h || 0);
+    }
+    focus () {
+        if (!this._selector)
+            return;
+
+        let svg_dom = document.querySelector(this._selector);
+        let svg_parent = svg_dom.parentNode;
+
+        const w = svg_parent.width || svg_parent.clientWidth;
+        const h = svg_parent.height || svg_parent.clientHeight;
+
+        this.size(w, h);
+        this.refreshViewBox(w, h);
     }
     /** **************************************************************** *
      * ViewBox
