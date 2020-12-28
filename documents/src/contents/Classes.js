@@ -1,18 +1,15 @@
 import React from 'react';
 
 import { Section, Container, Heading } from 'react-bulma-components';
+import D3Svg from './classes/D3Svg.js';
+
 
 function Classes() {
-  return (
-      <Section>
-        <Container>
-          <Heading>Classes</Heading>
-          <Heading subtitle>
-            A simple container to divide your page into <strong>sections</strong>, like the one you are currently reading
-          </Heading>
-        </Container>
-      </Section>
-  );
+    return (
+        <div style={{width:1111,marginLeft:'auto', marginRight: 'auto'}}>
+          <D3Svg />
+        </div>
+    );
 }
 
 export default Classes;

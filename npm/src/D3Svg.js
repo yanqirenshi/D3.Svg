@@ -1,97 +1,15 @@
 import * as d3 from 'd3';
 
-class Conditioner {
-    raiseWarning (msg) {
-        try {
-            console.log('Warn: ' + msg);
-        } catch (w) {
-            console.log(msg);
-        }
-    }
-}
-
-class ViewBox {
-    center (w, h) {
-        return {
-            x: Math.floor( w/2 * -1 ),
-            y: Math.floor( h/2 * -1 ),
-        };
-    }
-    refresh (svg, x, y, w, h, scale) {
-        let w_scaled = Math.floor(w * scale),
-            h_scaled = Math.floor(h * scale);
-
-        var attr = ''
-            + (x - Math.floor(w_scaled/2)) + ' '
-            + (y - Math.floor(h_scaled/2)) + ' '
-            + w_scaled + ' '
-            + h_scaled;
-
-        svg.attr('viewBox', attr);
-    }
-}
-
-class Camera {
-    constructor () {
-        this._drag = null;
-        this._look = { at: { x:0, y:0 } };
-    }
-    init (params) {
-        if (!params)
-            return;
-
-        this.scale(params.scale);
-
-        this._look = params.look || { at: { x:0, y:0 } };
-    }
-    /** **************************************************************** *
-     * Accessor
-     * **************************************************************** */
-    look () {
-        return this._look;
-    }
-    scale (value) {
-        if (arguments.length > 0)
-            this._scale = value || 1;
-
-        return this._scale;
-    }
-    /** **************************************************************** *
-     * Move look at
-     * **************************************************************** */
-    moveStart (x, y) {
-        let scale = this._scale;
-
-        this._drag = {
-            x: x * scale,
-            y: y * scale
-        };
-    }
-    moveDrag (x, y) {
-        let scale = this._scale;
-
-        let from_x = this._drag.x,
-            from_y = this._drag.y;
-
-        let to_x = x * scale,
-            to_y = y * scale;
-
-        this._drag.x = to_x;
-        this._drag.y = to_y;
-
-        this._look.at.x -= (to_x - from_x);
-        this._look.at.y -= (to_y - from_y);
-    }
-    moveEnd () {
-        this._drag = null;
-    }
-}
+import Camera from './Camera.js';
+import Conditioner from './Conditioner.js';
+import ViewBox from './ViewBox.js';
 
 export default class D3Svg {
     constructor(params) {
         this._conditioner = new Conditioner();
         this._viewbox = new ViewBox();
         this._camera = new Camera();
+
         this._callbacks = {};
 
         this._initialized_at = null;
