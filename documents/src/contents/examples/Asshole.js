@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import Measure from "react-measure";
-import Core from './js/Core.js';
+import D3Svg from './js/D3Svg.js';
 
 const svg_id = `D3Svg-${Math.floor(Math.random() * Math.floor(88888888))}`;
 
-function D3Svg (props) {
-    const [core] = useState(new Core());
+function Asshole (props) {
+    const [core] = useState(new D3Svg());
 
     useEffect(() => {
         if (!core.selector())
@@ -29,4 +29,4 @@ function D3Svg (props) {
     );
 }
 
-export default D3Svg;
+export default Asshole;
