@@ -9,7 +9,7 @@ function HeadingMethod (props) {
             <p style={{fontWeight: 800}}>{props.name}</p>
             {props.args && <p style={{marginLeft:22, fontStyle: 'oblique'}}>
                              {props.args.map((d,i) => {
-                                 return <span key={i} style={i==0 ? null : {marginLeft:11}}>
+                                 return <span key={i} style={i===0 ? null : {marginLeft:11}}>
                                           {d}
                                         </span>;
                              })}
