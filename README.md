@@ -1,65 +1,39 @@
-# d3.svg
+# D3.Svg
 
-## Usage
+- [Github](https://github.com/yanqirenshi/D3.Svg)
+- [npm](https://www.npmjs.com/package/@yanqirenshi/d3.svg)
 
-### Load js file.
-
-```html
-<!DOCTYPE html>
-<html style="overflow:hidden;">
-    <head>
-        <script src="./libs/d3.js"></script>
-        <script src="./libs/d3-svg.js"></script>
-    </head>
-    <body>
-        <app>
-            <stage></stage>
-        </app>
-    </body>
-</html>
+## Install
 
 ```
-
-### Make D3Svg instance.
-
-```html
-<!-- ------------------- -->
-<!-- Example for Riot.js -->
-<!-- ------------------- -->
-<stage ref="self">
-    <svg ref="svg-tag"></svg>
-
-    <script>
-     this.d3svg = null;
-
-     this.on('mount', () => {
-         this.d3svg = new D3Svg({
-             d3: d3,
-             svg: d3.select("stage svg"),
-             x: 0,
-             y: 0,
-             w: this.refs.self.clientWidth,
-             h: this.refs.self.clientHeight,
-             scale: 1
-         });
-     });
-    </script>
-</stage>
+npm i @yanqirenshi/d3.svg
 ```
 
-### Svg
+## Usage (React)
 
-```html
-// Get
-this.d3svg.Svg();
+Import libs.
 
-// Set
-this.d3svg.Svg(d3.select("stage svg"));
+```
+import * as d3 from 'd3';
+import D3Svg from '@yanqirenshi/d3.svg';
+```
+
+make instance.
+
+```
+let svg = new D3Svg({
+    d3_element: d3.select('........'),
+    look: {
+        at: { x:0, y:0 },
+    },
+    scale: 2,
+});
 ```
 
 ## Dependencies
 
 - [D3.js](https://d3js.org/)
+- [Jest](https://jestjs.io/)
 
 ## Author
 
@@ -67,7 +41,7 @@ this.d3svg.Svg(d3.select("stage svg"));
 
 # Copyright
 
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+Copyright (c) 2020 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 # License
 
