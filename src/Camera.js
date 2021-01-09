@@ -48,7 +48,7 @@ export default class Camera {
 
         return this._look;
     }
-    lookAt(v) {
+    lookAt (v) {
         if (arguments.length > 0 && v) {
             if (v.x || v.x===0) this._look.at.x = v.x;
             if (v.y || v.y===0) this._look.at.y = v.y;
