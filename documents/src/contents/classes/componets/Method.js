@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Section, Container } from 'react-bulma-components';
+import { Section, Container, Heading } from 'react-bulma-components';
 import HeadingMethod from './HeadingMethod.js';
 
 export default function Method (props) {
@@ -13,6 +13,26 @@ export default function Method (props) {
             <HeadingMethod name={props.data.name}
                            args={args}
                            ret={ret} />
+
+
+            <Section>
+              <Container>
+                <Heading size={4}>Arguments</Heading>
+              </Container>
+            </Section>
+
+            <Section>
+              <Container>
+                <Heading size={4}>Value</Heading>
+              </Container>
+            </Section>
+
+            <Section>
+              <Container>
+                <Heading size={4}>Description</Heading>
+              </Container>
+            </Section>
+
           </Container>
         </Section>
     );

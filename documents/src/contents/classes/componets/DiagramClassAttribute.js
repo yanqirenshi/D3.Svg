@@ -9,9 +9,18 @@ export default function DiagramClassAttribute (props) {
           <div style={style.item.visibility}>
             {data.visibility}
           </div>
+
           <div style={style.item.name}>
             {data.name}
           </div>
+
+          {/* <div style={{marginLeft:22,marginRight:22}}> */}
+          {/*   <p>:</p> */}
+          {/* </div> */}
+
+          {/* <div style={style.item.name}> */}
+          {/*   {data.type.name} */}
+          {/* </div> */}
         </div>
     );
 }

@@ -11,6 +11,7 @@ export default class D3Svg {
     constructor() {
         this._selector = null;
         this._d3_element = null;
+        this._camera = null;
 
         this._conditioner = new Conditioner();
         this._viewbox = new ViewBox();
@@ -27,6 +28,8 @@ export default class D3Svg {
                 .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
                 .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); })
         );
+
+        return this;
     }
     settingZoom (d3element) {
         let self = this;
@@ -39,21 +42,25 @@ export default class D3Svg {
             .call(zoom.scaleBy, this.camera().scale());
 
         d3element.call(zoom);
+
+        return this;
     }
     settingClick (d3element) {
         d3element.on('click', () => {
             if(this._callbacks.click)
                 this._callbacks.click();
         });
+
+        return this;
     }
     setting () {
         const d3element = this.makeD3Element(this._selector);
 
         this._d3_element = d3element;
 
-        this.settingMove(d3element);
-        this.settingZoom(d3element);
-        this.settingClick(d3element);
+        this.settingMove(d3element)
+            .settingZoom(d3element)
+            .settingClick(d3element);
 
         return d3element;
     }

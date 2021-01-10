@@ -1,11 +1,12 @@
 const d3svg = {
     name: 'D3Svg',
     attributes: [
-        { name: '_selector',    type: { name: '???' }, visibility: '-' },
-        { name: '_d3_element',  type: { name: '???' }, visibility: '-' },
-        { name: '_conditioner', type: { name: '???' }, visibility: '-' },
-        { name: '_viewbox',     type: { name: '???' }, visibility: '-' },
-        { name: '_callbacks',   type: { name: '???' }, visibility: '-' },
+        { name: '_selector',    type: { name: 'String' }, visibility: '-' },
+        { name: '_d3_element',  type: { name: 'D3.js Selection' }, visibility: '-' },
+        { name: '_conditioner', type: { name: 'Instance Conditioner' }, visibility: '-' },
+        { name: '_camera',      type: { name: 'Instance Camera' }, visibility: '-' },
+        { name: '_viewbox',     type: { name: 'Instance Viewbox' }, visibility: '-' },
+        { name: '_callbacks',   type: { name: 'Instance Callbacks' }, visibility: '-' },
     ],
     methods: [
         {
@@ -17,7 +18,7 @@ const d3svg = {
                     arguments: [
                         { name: 'd3element' },
                     ],
-                    return: 'undefined',
+                    return: 'this',
                     visibility: '+'
                 },
                 {
@@ -25,7 +26,7 @@ const d3svg = {
                     arguments: [
                         { name: 'd3element' },
                     ],
-                    return: 'undefined',
+                    return: 'this',
                     visibility: '+'
                 },
                 {
@@ -33,7 +34,7 @@ const d3svg = {
                     arguments: [
                         { name: 'd3element' },
                     ],
-                    return: 'undefined',
+                    return: 'this',
                     visibility: '+'
                 },
                 {

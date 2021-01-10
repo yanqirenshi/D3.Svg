@@ -1,10 +1,16 @@
 const style = {
     item: {
-        root: {display: 'flex', alignItems: 'center'},
+        root: {
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: 555,
+        },
         visibility: {
             width:16
         },
-        name: {flexGrow:1},
+        name: {
+            whiteSpace: 'nowrap',
+        },
         operators: {
             marginLeft: 22,
         },
