@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Section, Container, Heading } from 'react-bulma-components';
-import Method from './componets/Method.js';
+import Method from './Method.js';
 
-function D3SvgMethods (props) {
+function Methods (props) {
     const methods = props.data.methods.reduce((list, d) => {
         if ("string"===(typeof d.type) && 'group'===d.type)
             list = list.concat(d.list || []);
@@ -16,7 +16,7 @@ function D3SvgMethods (props) {
     return (
         <Section>
           <Container>
-            <Heading>Methods</Heading>
+            <Heading size={1}>Methods</Heading>
 
             {methods.map(d => <Method key={d.name} data={d}/>)}
           </Container>
@@ -24,4 +24,4 @@ function D3SvgMethods (props) {
     );
 }
 
-export default D3SvgMethods;
+export default Methods;

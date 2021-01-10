@@ -2,7 +2,11 @@ const callbacks = {
     name: 'Callbacks',
     attributes: [],
     methods: [
-        { name: 'init',   type: { name: '???' }, visibility: '-' },
+        {
+            name: 'init',
+            type: { name: '???' },
+            visibility: '-'
+        },
     ],
 };
 

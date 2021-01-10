@@ -1,18 +1,20 @@
 import React from 'react';
 
-import { Section, Container } from 'react-bulma-components';
-import HeadingAttribute from './HeadingAttribute.js';
+import { Section, Container, Heading } from 'react-bulma-components';
+import Attribute from './Attribute.js';
 
-function Attributes (props) {
-    const data = props.data;
+export default function Attributes (props) {
+    const attributes = props.data.attributes;
 
     return (
-        <Section key={data.name}>
+        <Section>
           <Container>
-            <HeadingAttribute name={data.name} />
+            <Heading size={1}>
+              Attributes
+            </Heading>
+
+            {attributes.map(d => <Attribute key={d.name} data={d} />)}
           </Container>
         </Section>
     );
 }
-
-export default Attributes;

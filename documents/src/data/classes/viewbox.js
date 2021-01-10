@@ -2,7 +2,11 @@ const viewbox = {
     name: 'ViewBox',
     attributes: [],
     methods: [
-        { name: 'refresh',   type: { name: '???' }, visibility: '+' },
+        {
+            name: 'refresh',
+            type: { name: '???' },
+            visibility: '+'
+        },
     ],
 };
 

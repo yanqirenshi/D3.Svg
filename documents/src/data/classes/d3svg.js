@@ -10,37 +10,147 @@ const d3svg = {
     methods: [
         {
             type: 'group',
+            title: 'setting',
+            list: [
+                {
+                    name: 'settingMove',
+                    arguments: [
+                        { name: 'd3element' },
+                    ],
+                    return: 'undefined',
+                    visibility: '+'
+                },
+                {
+                    name: 'settingZoom',
+                    arguments: [
+                        { name: 'd3element' },
+                    ],
+                    return: 'undefined',
+                    visibility: '+'
+                },
+                {
+                    name: 'settingClick',
+                    arguments: [
+                        { name: 'd3element' },
+                    ],
+                    return: 'undefined',
+                    visibility: '+'
+                },
+                {
+                    name: 'setting',
+                    type: { name: '???' },
+                    arguments: [],
+                    return: 'd3element',
+                    visibility: '+'
+                },
+                {
+                    name: 'makeD3Element',
+                    arguments: [
+                        { name: 'val' },
+                    ],
+                    return: 'D3 Element',
+                    visibility: '+'
+                },
+            ],
+        },
+        {
+            type: 'group',
             title: 'accessor',
             list: [
-                { name: 'settingMove',   type: { name: '???' }, visibility: '+' },
-                { name: 'settingZoom',   type: { name: '???' }, visibility: '+' },
-                { name: 'settingClick',  type: { name: '???' }, visibility: '+' },
-                { name: 'setting',       type: { name: '???' }, visibility: '+' },
-                { name: 'makeD3Element', type: { name: '???' }, visibility: '+' },
+                {
+                    name: 'selector',
+                    arguments: [
+                        { name: 'v' },
+                        { name: 'throw_setting', default: 'TRUE' },
+                    ],
+                    return: 'this._selector',
+                    visibility: '+'
+                },
+                {
+                    name: 'd3Element',
+                    arguments: [],
+                    return: 'this._d3_element',
+                    visibility: '+'
+                },
+                {
+                    name: 'camera',
+                    arguments: [
+                        { name: 'v' },
+                    ],
+                    return: 'this._camera',
+                    visibility: '+'
+                },
+                {
+                    name: 'bounds',
+                    arguments: [
+                        { name: 'v' },
+                    ],
+                    return: 'this._camera.bounds()',
+                    visibility: '+'
+                },
             ],
         },
         {
             type: 'group',
             title: 'focus',
             list: [
-                { name: 'setSvgBounds', type: { name: '???' }, visibility: '-' },
-                { name: 'focus',        type: { name: '???' }, visibility: '-' },
+                {
+                    name: 'setSvgBounds',
+                    arguments: [
+                        { name: 'd3element' },
+                        { name: 'bounds' },
+                    ],
+                    return: 'undefined',
+                    visibility: '-'
+                },
+                {
+                    name: 'focus',
+                    arguments: [],
+                    return: 'undefined',
+                    visibility: '-'
+                },
             ],
         },
         {
             type: 'group',
             title: 'move camera',
             list: [
-                { name: 'setSvgGrabMoveStart', type: { name: '???' }, visibility: '-' },
-                { name: 'setSvgGrabMoveDrag',  type: { name: '???' }, visibility: '-' },
-                { name: 'setSvgGrabMoveEnd',   type: { name: '???' }, visibility: '-' },
+                {
+                    name: 'setSvgGrabMoveStart',
+                    arguments: [
+                        { name: 'event' },
+                    ],
+                    return: 'undefined',
+                    visibility: '-'
+                },
+                {
+                    name: 'setSvgGrabMoveDrag',
+                    arguments: [
+                        { name: 'event' },
+                    ],
+                    return: 'undefined',
+                    visibility: '-'
+                },
+                {
+                    name: 'setSvgGrabMoveEnd',
+                    arguments: [],
+                    return: 'undefined',
+                    visibility: '-'
+                },
             ],
         },
         {
             type: 'group',
             title: 'zoom camera',
             list: [
-                { name: 'setSvgGrabZoom', type: { name: '???' }, visibility: '-' },
+                {
+                    name: 'setSvgGrabZoom',
+                    arguments: [
+                        { name: 'event' },
+                    ],
+                    return: 'undefined',
+                    visibility: '-'
+                },
             ],
         },
     ],

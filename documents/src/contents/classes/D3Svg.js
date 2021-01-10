@@ -2,8 +2,8 @@ import React from 'react';
 import { Section, Container } from 'react-bulma-components';
 
 import DiagramClass from './componets/DiagramClass.js';
-import D3SvgAttributes from './D3SvgAttributes.js';
-import D3SvgMethods from './D3SvgMethods.js';
+import Attributes from './componets/Attributes.js';
+import Methods from './componets/Methods.js';
 
 function D3Svg (props) {
     return (
@@ -16,8 +16,8 @@ function D3Svg (props) {
               </div>
 
               <div style={{marginLeft:22}}>
-                <D3SvgAttributes data={props.data} />
-                <D3SvgMethods data={props.data} />
+                <Attributes data={props.data} />
+                <Methods data={props.data} />
               </div>
             </div>
 
