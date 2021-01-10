@@ -1,6 +1,6 @@
 const d3svg = {
     name: 'D3Svg',
-    attribute: [
+    attributes: [
         { name: '_selector',    type: { name: '???' }, visibility: '-' },
         { name: '_d3_element',  type: { name: '???' }, visibility: '-' },
         { name: '_conditioner', type: { name: '???' }, visibility: '-' },

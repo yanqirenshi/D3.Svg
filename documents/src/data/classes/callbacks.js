@@ -1,6 +1,6 @@
 const callbacks = {
     name: 'Callbacks',
-    attribute: [],
+    attributes: [],
     methods: [
         { name: 'init',   type: { name: '???' }, visibility: '-' },
     ],

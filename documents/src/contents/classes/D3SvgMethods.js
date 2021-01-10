@@ -1,86 +1,24 @@
 import React from 'react';
 
 import { Section, Container, Heading } from 'react-bulma-components';
-import HeadingMethod from './componets/HeadingMethod.js';
+import Method from './componets/Method.js';
 
-function D3SvgMethods () {
+function D3SvgMethods (props) {
+    const methods = props.data.methods.reduce((list, d) => {
+        if ("string"===(typeof d.type) && 'group'===d.type)
+            list = list.concat(d.list || []);
+        else
+            list.push(d);
+
+        return list;
+    }, []);
+
     return (
         <Section>
           <Container>
             <Heading>Methods</Heading>
 
-            <Section>
-              <Container>
-                <HeadingMethod name="constructor" args={['params']} ret="this"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="init" args={['params']} ret="this"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="d3Element" ret="D3 Element"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="w" ret="width"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="h" ret="height"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="size" args={['w', 'h']}/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="focus"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="refreshViewBox"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="setSvgGrabMoveStart" args={['event']}/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="setSvgGrabMoveDrag" args={['event']}/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="setSvgGrabMoveEnd"/>
-              </Container>
-            </Section>
-
-            <Section>
-              <Container>
-                <HeadingMethod name="setSvgGrabZoom" args={['event']}/>
-              </Container>
-            </Section>
-
+            {methods.map(d => <Method key={d.name} data={d}/>)}
           </Container>
         </Section>
     );

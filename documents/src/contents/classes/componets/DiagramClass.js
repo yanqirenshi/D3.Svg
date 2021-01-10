@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Control, Input, Checkbox, Panel, Icon, Button, Table
+    Panel
 } from 'react-bulma-components';
 
 import DiagramClassAttributes from './DiagramClassAttributes.js';
@@ -15,7 +15,7 @@ export default function DiagramClass (props) {
           <Panel.Header>{data.name}</Panel.Header>
 
           <Panel.Block>
-            <DiagramClassAttributes attributes={data.attribute}/>
+            <DiagramClassAttributes attributes={data.attributes}/>
           </Panel.Block>
 
           <Panel.Block>

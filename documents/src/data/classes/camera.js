@@ -1,6 +1,6 @@
 const camera = {
     name: 'Camera',
-    attribute: [
+    attributes: [
         { name: '_d3svg', type: { name: '???' }, visibility: '-' },
         { name: '_drag',  type: { name: '???' }, visibility: '-' },
         { name: '_look',  type: { name: '???' }, visibility: '-' },

@@ -1,6 +1,6 @@
 const conditioner = {
     name: 'Conditioner',
-    attribute: [],
+    attributes: [],
     methods: [
         { name: 'raiseWarning',   type: { name: '???' }, visibility: '+' },
     ],

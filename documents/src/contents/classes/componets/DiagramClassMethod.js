@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from 'react-bulma-components';
 import style from './DiagramClassStyles.js';
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Section, Container, Heading } from 'react-bulma-components';
+import { Section, Container } from 'react-bulma-components';
 import DiagramClass from './componets/DiagramClass.js';
 
 function D3Svg (props) {
