@@ -1,20 +1,26 @@
 import React from 'react';
-
 import { Section, Container, Heading } from 'react-bulma-components';
+
+import DiagramClass from './componets/DiagramClass.js';
 import D3SvgAttributes from './D3SvgAttributes.js';
 import D3SvgMethods from './D3SvgMethods.js';
 
-function D3Svg () {
+function D3Svg (props) {
     return (
         <Section>
           <Container>
-            <Heading>Class: D3Svg</Heading>
-            <Heading subtitle>
-              メインクラスです。
-            </Heading>
 
-            <D3SvgAttributes />
-            <D3SvgMethods />
+            <div style={{display:'flex'}}>
+              <div>
+                <DiagramClass data={props.data} />
+              </div>
+
+              <div style={{marginLeft:22}}>
+                <D3SvgAttributes />
+                <D3SvgMethods />
+              </div>
+            </div>
+
           </Container>
         </Section>
     );

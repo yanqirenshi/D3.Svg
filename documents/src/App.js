@@ -18,8 +18,8 @@ const active = (code, tabs) => {
 
 function App() {
     const [tabs, setTabs] = useState([
-        { code: 'examples', label: 'Examples', active: true },
-        { code: 'classes',  label: 'Classes',  active: false },
+        { code: 'examples', label: 'Examples', active: false },
+        { code: 'classes',  label: 'Classes',  active:  true },
     ]);
 
     const callbacks = {

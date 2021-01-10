@@ -15,9 +15,9 @@ function Hero(props) {
               <h1 className="title">
                 D3.Svg
               </h1>
-              <h2 className="subtitle">
-                Subtitle
-              </h2>
+              {/* <h2 className="subtitle"> */}
+              {/*   Subtitle */}
+              {/* </h2> */}
             </div>
           </div>
 

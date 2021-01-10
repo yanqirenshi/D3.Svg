@@ -1,15 +1,21 @@
 import React from 'react';
-
 import { Section, Container, Heading } from 'react-bulma-components';
 
-function Camera () {
+import DiagramClass from './componets/DiagramClass.js';
+
+function Camera (props) {
     return (
         <Section>
           <Container>
-            <Heading>Class: Camera</Heading>
-            <Heading subtitle>
-              メインクラスです。
-            </Heading>
+
+            <div style={{display:'flex'}}>
+              <div>
+                <DiagramClass data={props.data} />
+              </div>
+
+              <div style={{marginLeft:22}}>
+              </div>
+            </div>
 
           </Container>
         </Section>
