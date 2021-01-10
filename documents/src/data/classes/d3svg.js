@@ -1,12 +1,12 @@
 const d3svg = {
     name: 'D3Svg',
     attributes: [
-        { name: '_selector',    type: { name: 'String' }, visibility: '-' },
-        { name: '_d3_element',  type: { name: 'D3.js Selection' }, visibility: '-' },
-        { name: '_conditioner', type: { name: 'Instance Conditioner' }, visibility: '-' },
-        { name: '_camera',      type: { name: 'Instance Camera' }, visibility: '-' },
-        { name: '_viewbox',     type: { name: 'Instance Viewbox' }, visibility: '-' },
-        { name: '_callbacks',   type: { name: 'Instance Callbacks' }, visibility: '-' },
+        { visibility: '-', name: '_selector',    type: { name: 'String' },               default: '???', description: '' },
+        { visibility: '-', name: '_d3_element',  type: { name: 'D3.js Selection' },      default: '???', description: '' },
+        { visibility: '-', name: '_conditioner', type: { name: 'Instance Conditioner' }, default: '???', description: '' },
+        { visibility: '-', name: '_camera',      type: { name: 'Instance Camera' },      default: '???', description: '' },
+        { visibility: '-', name: '_viewbox',     type: { name: 'Instance Viewbox' },     default: '???', description: '' },
+        { visibility: '-', name: '_callbacks',   type: { name: 'Instance Callbacks' },   default: '???', description: '' },
     ],
     methods: [
         {
@@ -16,41 +16,46 @@ const d3svg = {
                 {
                     name: 'settingMove',
                     arguments: [
-                        { name: 'd3element' },
+                        { name: 'd3element', default: '', description: '' },
                     ],
                     return: 'this',
-                    visibility: '+'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'settingZoom',
                     arguments: [
-                        { name: 'd3element' },
+                        { name: 'd3element', default: '', description: '' },
                     ],
                     return: 'this',
-                    visibility: '+'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'settingClick',
                     arguments: [
-                        { name: 'd3element' },
+                        { name: 'd3element', default: '', description: '' },
                     ],
                     return: 'this',
-                    visibility: '+'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'setting',
-                    type: { name: '???' },
+                    type: { name: '???', default: '', description: '' },
                     arguments: [],
                     return: 'd3element',
-                    visibility: '+'
+                    visibility: '+',
+                    description: '???',
                 },
                 {
                     name: 'makeD3Element',
                     arguments: [
-                        { name: 'val' },
+                        { name: 'val', default: '', description: '' },
                     ],
                     return: 'D3 Element',
-                    visibility: '+'
+                    visibility: '-',
+                    description: '???',
                 },
             ],
         },
@@ -61,33 +66,37 @@ const d3svg = {
                 {
                     name: 'selector',
                     arguments: [
-                        { name: 'v' },
-                        { name: 'throw_setting', default: 'TRUE' },
+                        { name: 'v', default: '', description: '' },
+                        { name: 'throw_setting', default: 'TRUE', default: '', description: '' },
                     ],
                     return: 'this._selector',
-                    visibility: '+'
+                    visibility: '+',
+                    description: '???',
                 },
                 {
                     name: 'd3Element',
                     arguments: [],
                     return: 'this._d3_element',
-                    visibility: '+'
+                    visibility: '+',
+                    description: '???',
                 },
                 {
                     name: 'camera',
                     arguments: [
-                        { name: 'v' },
+                        { name: 'v', default: '', description: '' },
                     ],
                     return: 'this._camera',
-                    visibility: '+'
+                    visibility: '+',
+                    description: '???',
                 },
                 {
                     name: 'bounds',
                     arguments: [
-                        { name: 'v' },
+                        { name: 'v', default: '', description: '' },
                     ],
                     return: 'this._camera.bounds()',
-                    visibility: '+'
+                    visibility: '+',
+                    description: '???',
                 },
             ],
         },
@@ -98,17 +107,19 @@ const d3svg = {
                 {
                     name: 'setSvgBounds',
                     arguments: [
-                        { name: 'd3element' },
-                        { name: 'bounds' },
+                        { name: 'd3element', default: '', description: '' },
+                        { name: 'bounds', default: '', description: '' },
                     ],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'focus',
                     arguments: [],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '+',
+                    description: '???',
                 },
             ],
         },
@@ -119,24 +130,27 @@ const d3svg = {
                 {
                     name: 'setSvgGrabMoveStart',
                     arguments: [
-                        { name: 'event' },
+                        { name: 'event', default: '', description: '' },
                     ],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'setSvgGrabMoveDrag',
                     arguments: [
-                        { name: 'event' },
+                        { name: 'event', default: '', description: '' },
                     ],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '-',
+                    description: '???',
                 },
                 {
                     name: 'setSvgGrabMoveEnd',
                     arguments: [],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '-',
+                    description: '???',
                 },
             ],
         },
@@ -147,10 +161,11 @@ const d3svg = {
                 {
                     name: 'setSvgGrabZoom',
                     arguments: [
-                        { name: 'event' },
+                        { name: 'event', default: '', description: '' },
                     ],
                     return: 'undefined',
-                    visibility: '-'
+                    visibility: '-',
+                    description: '???',
                 },
             ],
         },

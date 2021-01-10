@@ -1,9 +1,9 @@
 const camera = {
     name: 'Camera',
     attributes: [
-        { name: '_d3svg', type: { name: '???' }, visibility: '-' },
-        { name: '_drag',  type: { name: '???' }, visibility: '-' },
-        { name: '_look',  type: { name: '???' }, visibility: '-' },
+        { visibility: '-', name: '_d3svg', type: { name: '???' }, default: 'NULL', description: '' },
+        { visibility: '-', name: '_drag',  type: { name: '???' }, default: 'NULL', description: '' },
+        { visibility: '-', name: '_look',  type: { name: '???' }, default: 'this.templateLook()', description: '' },
     ],
     methods: [
         {
@@ -12,13 +12,19 @@ const camera = {
             list: [
                 {
                     name: 'templateLook',
-                    type: { name: '???' },
-                    visibility: '+'
+                    visibility: '+',
+                    arguments: [],
+                    return: 'Object',
+                    description: '',
                 },
                 {
                     name: 'init',
-                    type: { name: '???' },
-                    visibility: '+'
+                    visibility: '+',
+                    arguments: [
+                        { name: 'params', type: { name: 'Object' }, default: null, description: '' },
+                    ],
+                    return: 'undefined',
+                    description: '',
                 },
             ],
         },
@@ -28,23 +34,39 @@ const camera = {
             list: [
                 {
                     name: 'look',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'Object' }, default: null, description: '' },
+                    ],
+                    return: 'this._look',
+                    description: '',
                 },
                 {
                     name: 'lookAt',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'Object' }, default: null, description: '{ x: number, y: number }' },
+                    ],
+                    return: 'this._look.at',
+                    description: '',
                 },
                 {
                     name: 'scale',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'number' }, default: null, description: '' },
+                    ],
+                    return: 'this._look.scale',
+                    description: '',
                 },
                 {
                     name: 'bounds',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'Object' }, default: null, description: '{ w: number, h: number}' },
+                    ],
+                    return: 'this._look.bounds',
+                    description: '',
                 },
             ],
         },
@@ -54,13 +76,23 @@ const camera = {
             list: [
                 {
                     name: 'move',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'Object' }, default: null, description: '{ x: number, y: number}' },
+                        { name: 'set', type: { name: 'Boolean' }, default: 'TRUE', description: '' },
+                    ],
+                    return: 'this',
+                    description: '',
                 },
                 {
                     name: 'zoom',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'v', type: { name: 'number' }, default: null, description: '' },
+                        { name: 'set', type: { name: 'Boolean' }, default: 'TRUE', description: '' },
+                    ],
+                    return: 'this',
+                    description: '',
                 },
             ],
         },
@@ -70,18 +102,30 @@ const camera = {
             list: [
                 {
                     name: 'moveStart',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'x', type: { name: 'number' }, default: null, description: '' },
+                        { name: 'y', type: { name: 'number' }, default: null, description: '' },
+                    ],
+                    return: 'undefined',
+                    description: '',
                 },
                 {
                     name: 'moveDrag',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [
+                        { name: 'x', type: { name: 'number' }, default: null, description: '' },
+                        { name: 'y', type: { name: 'number' }, default: null, description: '' },
+                    ],
+                    return: 'undefined',
+                    description: '',
                 },
                 {
                     name: 'moveEnd',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [],
+                    return: 'undefined',
+                    description: '',
                 },
             ],
         },
@@ -91,8 +135,10 @@ const camera = {
             list: [
                 {
                     name: 'focus',
-                    type: { name: '???' },
-                    visibility: '-'
+                    visibility: '-',
+                    arguments: [],
+                    return: 'undefined',
+                    description: '',
                 },
             ],
         },
