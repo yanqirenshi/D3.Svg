@@ -4,18 +4,19 @@ import { Section, Container } from 'react-bulma-components';
 import DiagramClass from './componets/DiagramClass.js';
 import Attributes from './componets/Attributes.js';
 import Methods from './componets/Methods.js';
+import style from './Style.js';
 
 function D3Svg (props) {
     return (
         <Section>
           <Container>
 
-            <div style={{display:'flex'}}>
+            <div style={style.root}>
               <div>
                 <DiagramClass data={props.data} />
               </div>
 
-              <div style={{marginLeft:22}}>
+              <div style={style.right}>
                 <Attributes data={props.data} />
                 <Methods data={props.data} />
               </div>
