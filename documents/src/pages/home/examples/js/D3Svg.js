@@ -5,63 +5,80 @@ import Conditioner from './Conditioner.js';
 import ViewBox from './ViewBox.js';
 import Callbacks from './Callbacks.js';
 
-export default class Core {
+export { Camera }
+
+export default class D3Svg {
     constructor() {
+        this._selector = null;
+        this._d3_element = null;
+        this._camera = null;
+
         this._conditioner = new Conditioner();
         this._viewbox = new ViewBox();
-        this._camera = new Camera();
         this._callbacks = new Callbacks().init();
 
-        this._selector = null;
-
-        this._d3_element = null;
-
-        this._bounds = { w:0, h: 0 };
+        this.camera(new Camera());
     }
     settingMove (d3element) {
         let self = this;
 
         d3element.call(
             d3.drag()
-                .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
-                .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
-                .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); })
+                .on('start', function (a,b,c) { console.log([a,b,c]); })
+                .on("drag",  function (a,b,c) { console.log([a,b,c]); })
+                .on('end',   function (a,b,c) { console.log([a,b,c]); })
         );
+
+        // d3element.call(
+        //     d3.drag()
+        //         .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
+        //         .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
+        //         .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); })
+        // );
+
+        return this;
     }
     settingZoom (d3element) {
         let self = this;
 
         let zoom = d3.zoom()
-            .on("zoom", function () { self.setSvgGrabZoom(d3.event); });
+            .on("zoom", function (a,b,c) { console.log(a,b,c); });
+
+        // let zoom = d3.zoom()
+        //     .on("zoom", function () { self.setSvgGrabZoom(d3.event); });
 
         d3element
             .transition()
-            .call(zoom.scaleBy, this._camera.scale());
+            .call(zoom.scaleBy, this.camera().scale());
 
         d3element.call(zoom);
+
+        return this;
     }
     settingClick (d3element) {
         d3element.on('click', () => {
             if(this._callbacks.click)
                 this._callbacks.click();
         });
+
+        return this;
     }
     setting () {
-        const d3element = this.ensureD3Element(this._selector);
+        const d3element = this.makeD3Element(this._selector);
 
-        this.setBounts(d3element, this.bounds());
+        this._d3_element = d3element;
 
-        this.settingMove(d3element);
-        this.settingZoom(d3element);
-        this.settingClick(d3element);
+        this.settingMove(d3element)
+            .settingZoom(d3element)
+            .settingClick(d3element);
 
         return d3element;
     }
-    ensureD3Element (val) {
+    makeD3Element (val) {
         if (typeof val==='string') {
             this._selector = val;
 
-            return this.ensureD3Element(d3.select(val));
+            return this.makeD3Element(d3.select(val));
         }
 
         if (typeof val==='object')
@@ -78,23 +95,15 @@ export default class Core {
 
         throw new Error(msg);
     }
-    /** **************************************************************** *
-     * utils
-     * **************************************************************** */
-    setBounts (d3element, bounds) {
-        if (d3element)
-            d3element
-            .attr('width', bounds.width + 'px')
-            .attr('height', bounds.height + 'px');
-    }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * Accessor
      * **************************************************************** */
-    selector (v) {
+    selector (v, throw_setting=true) {
         if (arguments.length!==0) {
             this._selector = v;
 
-            this.setting();
+            if (!throw_setting)
+                this.setting();
         }
 
         return this._selector;
@@ -105,30 +114,37 @@ export default class Core {
     camera (v) {
         if (arguments.length!==0) {
             this._camera = v;
+            this._camera._d3svg = this;
+            this.focus();
         }
 
         return this._camera;
     }
     bounds (v) {
-        if (arguments.length!==0) {
-            this._bounds = v;
+        if (arguments.length!==0)
+            this._camera.bounds(v);
 
-            this.setBounts(this.d3Element(), this._bounds);
-        }
-
-        return this._bounds;
+        return this._camera.bounds();
     }
-    size (w, h) {
-        this.d3Element()
-            .attr('width', w || 0)
-            .attr('height', h || 0);
+    /** *************************************************************** *
+     * focus
+     * **************************************************************** */
+    setSvgBounds (d3element, bounds) {
+        if (!d3element)
+            return;
+
+        d3element
+            .attr('width',  (bounds.w || 0) + 'px')
+            .attr('height', (bounds.h || 0) + 'px');
     }
     focus () {
         let viewbox = this._viewbox;
 
+        this.setSvgBounds(this.d3Element(), this.bounds());
+
         viewbox.refresh(this.d3Element(), this.camera());
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * MOOVE Camera
      * **************************************************************** */
     setSvgGrabMoveStart (event) {
@@ -149,7 +165,7 @@ export default class Core {
                 z: 0
             });
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * ZOOM Camera
      * **************************************************************** */
     setSvgGrabZoom (event) {

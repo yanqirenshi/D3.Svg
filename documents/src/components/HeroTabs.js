@@ -1,25 +1,27 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 function HeroTabs (props) {
+    const tabs = props.tabs;
+    const tab = props.tab;
 
-    const clickTab = (e) => {
-        props.callbacks.click (e.target.getAttribute('tab_code'));
-    };
+    const isSelected = (d, tab) => d.code===tab.code;
 
     return (
-        <nav className="tabs">
+        <nav className="tabs is-centered is-boxed">
           <div className="container">
             <ul>
-              {props.source.map(d => {
-                  return <li key={d.code}
-                             className={d.active ? "is-active" : ''}
-                             tab_code={d.code}
-                             onClick={clickTab}>
-
-                           <a tab_code={d.code}>
-                             {d.label}
-                           </a>
-                         </li>;
+              {tabs.map(d => {
+                  const is_selected = isSelected(d, tab);
+                  return (
+                      <li key={d.code}
+                          className={is_selected ? "is-active" : ''}>
+                        <Link to={{search: "?tab=" + d.code,}}
+                              style={is_selected ? {color:'#96514d'} : null}>
+                          {d.label}
+                        </Link>
+                      </li>
+                  );
               })}
             </ul>
           </div>

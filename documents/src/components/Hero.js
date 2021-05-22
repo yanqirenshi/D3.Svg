@@ -4,8 +4,11 @@ import HeroNavbar from './HeroNavbar.js';
 import HeroTabs from './HeroTabs.js';
 
 function Hero(props) {
+    const tabs = props.tabs;
+    const tab = props.tab;
+
     return (
-        <section className="hero is-primary is-medium">
+        <section className="hero is-primary is-medium" style={{background:'#96514d'}}>
           <div className="hero-head">
             <HeroNavbar />
           </div>
@@ -22,7 +25,7 @@ function Hero(props) {
           </div>
 
           <div className="hero-foot">
-            <HeroTabs source={props.tabs} callbacks={props.callbacks.tabs}/>
+            <HeroTabs tabs={tabs} tab={tab} />
           </div>
         </section>
     );

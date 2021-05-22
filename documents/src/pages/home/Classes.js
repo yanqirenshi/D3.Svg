@@ -9,7 +9,7 @@ import ViewBox from './classes/ViewBox.js';
 import Callbacks from './classes/Callbacks.js';
 import Conditioner from './classes/Conditioner.js';
 
-import * as data from '../data/Classes.js';
+import * as data from '../../data/Classes.js';
 
 function Classes() {
     const [tabs, setTabs] = useState([

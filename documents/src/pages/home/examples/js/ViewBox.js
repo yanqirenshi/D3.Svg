@@ -3,8 +3,8 @@ export default class ViewBox {
         if (!d3element)
             return;
 
-        const w = d3element.attr('width');
-        const h = d3element.attr('height');
+        const w = d3element.attr('width').replace('px','') * 1;
+        const h = d3element.attr('height').replace('px','') * 1;
 
         const look = camera.look();
         const x = look.at.x;
