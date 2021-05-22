@@ -17,7 +17,7 @@ function makeTabs (tabs, callback) {
     });
 }
 
-function TabsClasses (props) {
+export default function TabsClasses (props) {
     const tabs = props.tabs || [];
 
     return (
@@ -26,5 +26,3 @@ function TabsClasses (props) {
         </Tabs>
     );
 }
-
-export default TabsClasses;

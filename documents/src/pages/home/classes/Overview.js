@@ -1,9 +1,7 @@
 import React from 'react';
 import { Section, Container, Heading } from 'react-bulma-components';
 
-import style from './Style.js';
-
-function Overview () {
+export default function Overview () {
     return (
         <Section>
           <Container>
@@ -12,5 +10,3 @@ function Overview () {
         </Section>
     );
 }
-
-export default Overview;

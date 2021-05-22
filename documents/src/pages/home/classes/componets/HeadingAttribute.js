@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Heading } from 'react-bulma-components';
 
-function HeadingAttribute (props) {
+export default function HeadingAttribute (props) {
     return (
         <Heading style={{marginBottom:11}}>
           <div style={{display: 'flex'}}>
@@ -13,5 +13,3 @@ function HeadingAttribute (props) {
         </Heading>
     );
 }
-
-export default HeadingAttribute;

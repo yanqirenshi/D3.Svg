@@ -67,7 +67,7 @@ const d3svg = {
                     name: 'selector',
                     arguments: [
                         { name: 'v', default: '', description: '' },
-                        { name: 'throw_setting', default: 'TRUE', default: '', description: '' },
+                        { name: 'throw_setting', default: 'TRUE', description: '' },
                     ],
                     return: 'this._selector',
                     visibility: '+',

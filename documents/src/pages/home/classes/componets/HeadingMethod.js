@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Heading } from 'react-bulma-components';
 
-function HeadingMethod (props) {
+export default function HeadingMethod (props) {
     return (
         <Heading>
           <div style={{display: 'flex'}}>
@@ -11,5 +11,3 @@ function HeadingMethod (props) {
         </Heading>
     );
 }
-
-export default HeadingMethod;

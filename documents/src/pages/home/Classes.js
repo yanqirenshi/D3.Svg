@@ -11,7 +11,7 @@ import Conditioner from './classes/Conditioner.js';
 
 import * as data from '../../data/Classes.js';
 
-function Classes() {
+export default function Classes() {
     const [tabs, setTabs] = useState([
         { code: 'Overview',    label: 'Overviw',     active: false },
         { code: 'D3Svg',       label: 'D3Svg',       active:  true },
@@ -45,5 +45,3 @@ function Classes() {
         </div>
     );
 }
-
-export default Classes;

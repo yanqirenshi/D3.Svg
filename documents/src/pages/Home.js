@@ -5,33 +5,31 @@ import Hero from '../components/Hero.js';
 import Classes from './home/Classes.js';
 import Examples from './home/Examples.js';
 
-const changeTab = (code, tabs) => {
-    return tabs.map((d) => {
-        const new_data = {...d};
-        new_data.active = new_data.code===code;
-        return new_data;
-    });
-};
-
-const active = (code, tabs) => {
-    return tabs.find(d=>d.code===code).active;
-};
-
 function Home () {
-    const [tabs, setTabs] = useState([
-        { code: 'examples', label: 'Examples' },
-        { code: 'classes',  label: 'Classes'  },
+    const [tabs] = useState([
+        { code: 'examples', label: 'Examples'},
+        { code: 'classes',  label: 'Classes' },
     ]);
 
     const code = new URLSearchParams(useLocation().search).get('tab');
     const tab = tabs.find(d=>d.code===code) || tabs[0];
 
+    const hero = <Hero tabs={tabs} tab={tab} />;
     return (
-        <div>
-          <Hero tabs={tabs} tab={tab} />
-          {'classes' ===tab.code && <Classes />}
-          {'examples'===tab.code && <Examples />}
-        </div>
+        <>
+          {'classes' ===tab.code
+           && <div style={{overflow:'auto', height: '100%'}}>
+                {hero}
+                <Classes />
+              </div>}
+          {'examples'===tab.code
+           && <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
+                {hero}
+                <div style={{flexGrow:1}}>
+                  <Examples />
+                </div>
+              </div>}
+        </>
     );
 }
 

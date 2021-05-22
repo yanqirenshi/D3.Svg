@@ -1,5 +1,4 @@
 import React from 'react';
-import { Section, Container } from 'react-bulma-components';
 
 import DiagramClass from './componets/DiagramClass.js';
 import Attributes from './componets/Attributes.js';

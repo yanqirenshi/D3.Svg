@@ -1,9 +1,16 @@
 import React from 'react';
 
-import { Section, Container, Heading } from 'react-bulma-components';
 import Asshole from './examples/Asshole.js';
 
-function Examples() {
+const style = {
+    root: {
+        width:'100%',
+        height: '100%',
+        padding: 22
+    }
+};
+
+export default function Examples() {
     const camera = {
         look:  {
             at: {
@@ -15,21 +22,10 @@ function Examples() {
     };
 
     return (
-        <div style={{width:1111,marginLeft:'auto', marginRight: 'auto'}}>
-          <Section>
-            <Container>
-              <Heading>Examples</Heading>
-              <Heading subtitle>
-                A simple container to divide your page into <strong>sections</strong>, like the one you are currently reading
-              </Heading>
-
-              <div style={{width:888, height:555}}>
-                <Asshole camera={camera}/>
-              </div>
-            </Container>
-          </Section>
+        <div style={style.root}>
+          <div style={{height:'100%'}}>
+            <Asshole camera={camera}/>
+          </div>
         </div>
     );
 }
-
-export default Examples;

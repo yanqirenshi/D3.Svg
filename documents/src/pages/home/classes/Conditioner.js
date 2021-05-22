@@ -1,5 +1,4 @@
 import React from 'react';
-import { Section, Container } from 'react-bulma-components';
 
 import DiagramClass from './componets/DiagramClass.js';
 import Attributes from './componets/Attributes.js';
@@ -18,7 +17,7 @@ const style = {
     },
 };
 
-function Conditioner (props) {
+export default function Conditioner (props) {
     const column_width = 100;
     const gutter = 10;
 
@@ -35,5 +34,3 @@ function Conditioner (props) {
         </div>
     );
 }
-
-export default Conditioner;

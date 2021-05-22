@@ -3,7 +3,7 @@ import React from 'react';
 import { Section, Container, Heading, Content } from 'react-bulma-components';
 import HeadingAttribute from './HeadingAttribute.js';
 
-function Attribute (props) {
+export default function Attribute (props) {
     const data = props.data;
 
     return (
@@ -45,5 +45,3 @@ function Attribute (props) {
         </Section>
     );
 }
-
-export default Attribute;
