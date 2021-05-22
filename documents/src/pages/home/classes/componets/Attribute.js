@@ -7,11 +7,11 @@ function Attribute (props) {
     const data = props.data;
 
     return (
-        <Section>
+        <Section style={{padding:22}}>
           <Container>
             <HeadingAttribute name={data.name} />
 
-            <Section>
+            <Section style={{padding:11}}>
               <Container>
                 <Heading size={4}>Value Type</Heading>
 
@@ -21,7 +21,7 @@ function Attribute (props) {
               </Container>
             </Section>
 
-            <Section>
+            <Section style={{padding:11}}>
               <Container>
                 <Heading size={4}>Initial Value</Heading>
 
@@ -31,7 +31,7 @@ function Attribute (props) {
               </Container>
             </Section>
 
-            <Section>
+            <Section style={{padding:11}}>
               <Container>
                 <Heading size={4}>Description</Heading>
 

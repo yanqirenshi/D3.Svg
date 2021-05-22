@@ -30,7 +30,7 @@ function Classes() {
     const isActive = (k) => tabs.find(d=>d.code===k).active;
 
     return (
-        <div style={{width:1111,marginLeft:'auto', marginRight: 'auto'}}>
+        <div style={{width:'100%'}}>
 
           <div style={{marginTop: 22, display: 'flex', justifyContent: 'center'}}>
             <TabsClasses tabs={tabs} onClickTab={clickTab} />
