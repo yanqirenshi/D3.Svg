@@ -1,6 +1,6 @@
 {
     "name": "@yanqirenshi/d3.svg",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -19,7 +19,7 @@
     },
     "homepage": "https://github.com/yanqirenshi/D3.Svg#readme",
     "dependencies": {
-        "d3": "^5.15.1"
+        "d3": "6.7.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.8.4",

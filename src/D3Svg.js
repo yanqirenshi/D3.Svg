@@ -21,12 +21,11 @@ export default class D3Svg {
     }
     settingMove (d3element) {
         let self = this;
-
         d3element.call(
             d3.drag()
-                .on('start', function ()     { self.setSvgGrabMoveStart(d3.event); })
-                .on("drag",  function (d, i) { self.setSvgGrabMoveDrag(d3.event); })
-                .on('end',   function (d, i) { self.setSvgGrabMoveEnd(); })
+                .on('start', function (e) { self.setSvgGrabMoveStart(e); })
+                .on("drag",  function (e) { self.setSvgGrabMoveDrag(e); })
+                .on('end',   function ()  { self.setSvgGrabMoveEnd(); })
         );
 
         return this;
@@ -35,7 +34,7 @@ export default class D3Svg {
         let self = this;
 
         let zoom = d3.zoom()
-            .on("zoom", function () { self.setSvgGrabZoom(d3.event); });
+            .on("zoom", function (event) { self.setSvgGrabZoom(event); });
 
         d3element
             .transition()
@@ -67,7 +66,6 @@ export default class D3Svg {
     makeD3Element (val) {
         if (typeof val==='string') {
             this._selector = val;
-
             return this.makeD3Element(d3.select(val));
         }
 
@@ -85,7 +83,7 @@ export default class D3Svg {
 
         throw new Error(msg);
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * Accessor
      * **************************************************************** */
     selector (v, throw_setting=true) {
@@ -116,7 +114,7 @@ export default class D3Svg {
 
         return this._camera.bounds();
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * focus
      * **************************************************************** */
     setSvgBounds (d3element, bounds) {
@@ -134,7 +132,7 @@ export default class D3Svg {
 
         viewbox.refresh(this.d3Element(), this.camera());
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * MOOVE Camera
      * **************************************************************** */
     setSvgGrabMoveStart (event) {
@@ -155,7 +153,7 @@ export default class D3Svg {
                 z: 0
             });
     }
-    /** **************************************************************** *
+    /** *************************************************************** *
      * ZOOM Camera
      * **************************************************************** */
     setSvgGrabZoom (event) {
