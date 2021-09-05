@@ -69,7 +69,7 @@ export default function Asshole (props) {
     const onResize = (contentRect) => {
         core.bounds({
             w: Math.floor(contentRect.bounds.width),
-            h: Math.floor(contentRect.bounds.height-1),
+            h: Math.floor(contentRect.bounds.height-2),
         });
     };
 
