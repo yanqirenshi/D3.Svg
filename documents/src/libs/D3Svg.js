@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 
 import Camera from './Camera.js';
 import Conditioner from './Conditioner.js';
-import ViewBox from './ViewBox.js';
 import Callbacks from './Callbacks.js';
 
 export { Camera }
@@ -14,7 +13,6 @@ export default class D3Svg {
         this._camera = null;
 
         this._conditioner = new Conditioner();
-        this._viewbox = new ViewBox();
         this._callbacks = new Callbacks().init();
 
         this.camera(new Camera());
@@ -102,8 +100,8 @@ export default class D3Svg {
     camera (v) {
         if (arguments.length!==0) {
             this._camera = v;
-            this._camera._d3svg = this;
-            this.focus();
+            this._camera._owner = this;
+            this.refresh();
         }
 
         return this._camera;
@@ -124,12 +122,34 @@ export default class D3Svg {
         return this._camera.bounds();
     }
     /** *************************************************************** *
-     * focus
+     * refresh
      * **************************************************************** */
-    focus () {
-        let viewbox = this._viewbox;
+    refresh () {
+        const svg = this.d3Element();
+        const camera = this.camera();
 
-        viewbox.refresh(this.d3Element(), this.camera());
+        if (!svg)
+            return;
+
+        const w = svg.attr('width').replace('px','') * 1;
+        const h = svg.attr('height').replace('px','') * 1;
+
+        const look = camera.look();
+        const x = look.at.x;
+        const y = look.at.y;
+
+        const scale = camera.scale();
+
+        let w_scaled = Math.floor(w * scale),
+            h_scaled = Math.floor(h * scale);
+
+        var attr = ''
+            + (x - Math.floor(w_scaled/2)) + ' '
+            + (y - Math.floor(h_scaled/2)) + ' '
+            + w_scaled + ' '
+            + h_scaled;
+
+        svg.attr('viewBox', attr);
     }
     /** *************************************************************** *
      * MOOVE Camera
@@ -140,7 +160,7 @@ export default class D3Svg {
     moveDrag (event) {
         this.camera().moveDrag(event.x, event.y);
 
-        this.focus();
+        this.refresh();
     }
     moveEnd () {
         this.camera().moveEnd();
@@ -160,7 +180,7 @@ export default class D3Svg {
 
         this.camera().scale(transform.k);
 
-        this.focus();
+        this.refresh();
 
         if(this._callbacks.zoomSvg)
             this._callbacks.zoomSvg(this._scale);

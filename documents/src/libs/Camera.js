@@ -3,7 +3,7 @@
 // viewport と svg の viewBox は同じ比率。
 export default class Camera {
     constructor (params) {
-        this._d3svg = null;
+        this._owner = null;
 
         this._drag = null;
         this._look = this.templateLook();
@@ -154,6 +154,7 @@ export default class Camera {
      * Focus
      * **************************************************************** */
     focus () {
-        this._d3svg.focus();
+        // TODO: ここは直接 viewBox 設定する。で良いかも。
+        this._owner.refresh();
     }
 }
