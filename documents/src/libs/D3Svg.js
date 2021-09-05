@@ -16,6 +16,8 @@ export default class D3Svg {
         this._callbacks = new Callbacks().init();
 
         this.camera(new Camera());
+
+        this._drag = null;
     }
     settingMove (d3element) {
         let self = this;
@@ -155,15 +157,27 @@ export default class D3Svg {
      * MOOVE Camera
      * **************************************************************** */
     moveStart (event) {
-        this.camera().moveStart(event.x, event.y);
+        this._drag = {
+            x: event.x,
+            y: event.y,
+        };
     }
     moveDrag (event) {
-        this.camera().moveDrag(event.x, event.y);
+        let from_x = this._drag.x,
+            from_y = this._drag.y;
+
+        let to_x = event.x,
+            to_y = event.y;
+
+        this._drag.x = to_x;
+        this._drag.y = to_y;
+
+        this.camera().move(to_x - from_x, to_y - from_y);
 
         this.refresh();
     }
     moveEnd () {
-        this.camera().moveEnd();
+        this._drag = null;
 
         if(this._callbacks.move.end)
             this._callbacks.move.end({

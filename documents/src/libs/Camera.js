@@ -5,7 +5,6 @@ export default class Camera {
     constructor (params) {
         this._owner = null;
 
-        this._drag = null;
         this._look = this.templateLook();
 
         if (params)
@@ -77,31 +76,7 @@ export default class Camera {
         return this._look.bounds;
     }
     /** **************************************************************** *
-     * move
-     * **************************************************************** */
-    move (v, set=false) {
-        if (!v) return this;
-
-        if (set) {
-            this.lookAt(v);
-            return this;
-        }
-
-        const at = this.lookAt();
-        const at_new =  {...at};
-
-        if (v.x) at_new.x += v.x;
-        if (v.y) at_new.y += v.y;
-
-        if (at_new.x===at.x && at_new.y===at.y)
-            return this;
-
-        this.lookAt(at_new);
-
-        return this;
-    }
-    /** **************************************************************** *
-     * move
+     * zoom
      * **************************************************************** */
     zoom (v, set=false) {
         if (!v) return this;
@@ -124,31 +99,14 @@ export default class Camera {
     /** **************************************************************** *
      * Move Drag
      * **************************************************************** */
-    moveStart (x, y) {
+    move (x, y) {
         let scale = this.scale();
 
-        this._drag = {
-            x: x * scale,
-            y: y * scale
-        };
-    }
-    moveDrag (x, y) {
-        let scale = this.scale();
+        this.lookAt({
+            x: this._look.at.x - (x * scale),
+            y: this._look.at.y - (y * scale),
+        });
 
-        let from_x = this._drag.x,
-            from_y = this._drag.y;
-
-        let to_x = x * scale,
-            to_y = y * scale;
-
-        this._drag.x = to_x;
-        this._drag.y = to_y;
-
-        this._look.at.x -= (to_x - from_x);
-        this._look.at.y -= (to_y - from_y);
-    }
-    moveEnd () {
-        this._drag = null;
     }
     /** **************************************************************** *
      * Focus
