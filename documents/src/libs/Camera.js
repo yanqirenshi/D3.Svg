@@ -1,3 +1,6 @@
+// viewport と スケールを管理する。
+// viewport と focus は相互関係にある。
+// viewport と svg の viewBox は同じ比率。
 export default class Camera {
     constructor (params) {
         this._d3svg = null;
