@@ -2,3 +2,5 @@
 node_modules
 documents/node_modules
 \#*\#
+.eslintcache
+.env

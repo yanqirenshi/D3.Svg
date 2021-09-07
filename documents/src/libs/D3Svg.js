@@ -160,6 +160,8 @@ export default class D3Svg {
     zoomed (event) {
         let transform = event.transform;
 
+        const k = transform.k;
+
         this.camera().scale(transform.k);
 
         if(this._callbacks.zoomSvg)
