@@ -1,8 +1,10 @@
+// viewport と スケールを管理する。
+// viewport と focus は相互関係にある。
+// viewport と svg の viewBox は同じ比率。
 export default class Camera {
     constructor (params) {
-        this._d3svg = null;
+        this._owner = null;
 
-        this._drag = null;
         this._look = this.templateLook();
 
         if (params)
@@ -50,55 +52,49 @@ export default class Camera {
     }
     lookAt (v) {
         if (arguments.length > 0 && v) {
+            const x = this._look.at.x;
+            const y = this._look.at.y;
+
             if (v.x || v.x===0) this._look.at.x = v.x;
             if (v.y || v.y===0) this._look.at.y = v.y;
+
+            if (x !== this._look.at.x || y !== this._look.at.y)
+                this.focus();
         }
 
         return this._look.at;
     }
     scale (v) {
-        if (arguments.length > 0)
+        if (arguments.length > 0) {
+            const scale = this._look.scale;
+
             this._look.scale = v || 1;
+
+            if (scale !== this._look.scale)
+                this.focus();
+        }
 
         return this._look.scale;
     }
     bounds (v) {
         if (arguments.length > 0) {
+            const old_w = this._look.bounds.w,
+                  old_h = this._look.bounds.h;
+
             const w = v.w || v.width;
             const h = v.h || v.height;
 
             if (w || w===0) this._look.bounds.w = w < 0 ? 0 : w;
             if (h || h===0) this._look.bounds.h = h < 0 ? 0 : h;
+
+            if (old_w !== this._look.bounds.w || old_h !== this._look.bounds.h)
+                this.focus();
         }
 
         return this._look.bounds;
     }
     /** **************************************************************** *
-     * move
-     * **************************************************************** */
-    move (v, set=false) {
-        if (!v) return this;
-
-        if (set) {
-            this.lookAt(v);
-            return this;
-        }
-
-        const at = this.lookAt();
-        const at_new =  {...at};
-
-        if (v.x) at_new.x += v.x;
-        if (v.y) at_new.y += v.y;
-
-        if (at_new.x===at.x && at_new.y===at.y)
-            return this;
-
-        this.lookAt(at_new);
-
-        return this;
-    }
-    /** **************************************************************** *
-     * move
+     * zoom
      * **************************************************************** */
     zoom (v, set=false) {
         if (!v) return this;
@@ -121,36 +117,46 @@ export default class Camera {
     /** **************************************************************** *
      * Move Drag
      * **************************************************************** */
-    moveStart (x, y) {
-        let scale = this.scale();
+    move (x, y) {
+        const scale = this.scale();
 
-        this._drag = {
-            x: x * scale,
-            y: y * scale
-        };
-    }
-    moveDrag (x, y) {
-        let scale = this.scale();
-
-        let from_x = this._drag.x,
-            from_y = this._drag.y;
-
-        let to_x = x * scale,
-            to_y = y * scale;
-
-        this._drag.x = to_x;
-        this._drag.y = to_y;
-
-        this._look.at.x -= (to_x - from_x);
-        this._look.at.y -= (to_y - from_y);
-    }
-    moveEnd () {
-        this._drag = null;
+        this.lookAt({
+            x: this._look.at.x - (x * scale),
+            y: this._look.at.y - (y * scale),
+        });
     }
     /** **************************************************************** *
      * Focus
      * **************************************************************** */
     focus () {
-        this._d3svg.focus();
+        const owner = this._owner;
+
+        const svg = owner.d3Element();
+        const camera = this;
+
+        if (!svg)
+            return;
+
+        // TODO: これやるんだったら bound 不要だな。
+        // svg = bound だからどちらでも良いのか。
+        const w = svg.attr('width').replace('px','') * 1;
+        const h = svg.attr('height').replace('px','') * 1;
+
+        const look = camera.look();
+        const x = look.at.x;
+        const y = look.at.y;
+
+        const scale = camera.scale();
+
+        let w_scaled = Math.floor(w * scale),
+            h_scaled = Math.floor(h * scale);
+
+        var attr = ''
+            + (x - Math.floor(w_scaled/2)) + ' '
+            + (y - Math.floor(h_scaled/2)) + ' '
+            + w_scaled + ' '
+            + h_scaled;
+
+        svg.attr('viewBox', attr);
     }
 }

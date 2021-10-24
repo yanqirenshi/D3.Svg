@@ -7,7 +7,7 @@ import Callbacks from './Callbacks.js';
 export { Camera }
 
 export default class D3Svg {
-    constructor() {
+    constructor(options={}) {
         this._selector = null;
         this._d3_element = null;
         this._camera = null;
@@ -18,17 +18,11 @@ export default class D3Svg {
         this.camera(new Camera());
 
         this._drag = null;
-    }
-    settingMove (d3element) {
-        let self = this;
-        d3element.call(
-            d3.drag()
-                .on('start', function (e) { self.moveStart(e); })
-                .on("drag",  function (e) { self.moveDrag(e); })
-                .on('end',   function ()  { self.moveEnd(); })
-        );
 
-        return this;
+        this._layers = options.layers || [
+            { id: 1, code: 'background' },
+            { id: 2, code: 'foreground' },
+        ];
     }
     settingZoom (d3element) {
         let self = this;
@@ -52,12 +46,26 @@ export default class D3Svg {
 
         return this;
     }
+    settingLayers (d3element) {
+        const layers = this.layers();
+
+        d3element
+            .selectAll('g.layer')
+            .data(layers, (d) => { return d.id; })
+            .enter()
+            .append('g')
+            .attr('class', (d) => {
+                return 'layer ' + d.code;
+            });
+
+        return this;
+    }
     setting () {
         const d3element = this.makeD3Element(this._selector);
 
         this._d3_element = d3element;
 
-        this.settingMove(d3element)
+        this.settingLayers(d3element)
             .settingZoom(d3element)
             .settingClick(d3element);
 
@@ -83,6 +91,9 @@ export default class D3Svg {
 
         throw new Error(msg);
     }
+    /** *************************************************************** *
+     *  Layers
+     * **************************************************************** */
     /** *************************************************************** *
      * Accessor
      * **************************************************************** */
@@ -123,36 +134,15 @@ export default class D3Svg {
 
         return this._camera.bounds();
     }
-    /** *************************************************************** *
-     * MOOVE Camera
-     * **************************************************************** */
-    moveStart (event) {
-        this._drag = {
-            x: event.x,
-            y: event.y,
-        };
+    layers () {
+        return this._layers;
     }
-    moveDrag (event) {
-        let from_x = this._drag.x,
-            from_y = this._drag.y;
+    layer (code) {
+        const element = this.d3Element();
 
-        let to_x = event.x,
-            to_y = event.y;
+        if (!element) return null;
 
-        this._drag.x = to_x;
-        this._drag.y = to_y;
-
-        this.camera().move(to_x - from_x, to_y - from_y);
-    }
-    moveEnd () {
-        this._drag = null;
-
-        if(this._callbacks.move.end)
-            this._callbacks.move.end({
-                x: this._x,
-                y: this._y,
-                z: 0
-            });
+        return element.select(`g.layer.${code}`);
     }
     /** *************************************************************** *
      * ZOOM Camera
@@ -160,11 +150,8 @@ export default class D3Svg {
     zoomed (event) {
         let transform = event.transform;
 
-        const k = transform.k;
-
-        this.camera().scale(transform.k);
-
-        if(this._callbacks.zoomSvg)
-            this._callbacks.zoomSvg(this._scale);
+        this.d3Element()
+            .selectAll('g.layer')
+            .attr("transform", transform);
     }
 }
