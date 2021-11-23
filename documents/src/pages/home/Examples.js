@@ -18,7 +18,7 @@ export default function Examples() {
                 y:0,
             },
         },
-        scale: null,
+        scale: 2,
     };
 
     return (

@@ -8,6 +8,9 @@ export { Camera }
 
 export default class D3Svg {
     constructor(options={}) {
+        const layers = options.layers;
+        const transform = options.transform || {};
+
         this._selector = null;
         this._d3_element = null;
         this._camera = null;
@@ -19,10 +22,39 @@ export default class D3Svg {
 
         this._drag = null;
 
-        this._layers = options.layers || [
+        this._layers = layers || [
             { id: 1, code: 'background' },
             { id: 2, code: 'foreground' },
         ];
+
+        this._transform = {
+            k: transform.k || 1.0,
+            x: transform.x || 0.0,
+            y: transform.y || 0.0,
+        };
+    }
+    /** **************************************************************** *
+     * Settings
+     * **************************************************************** */
+    makeD3Element (val) {
+        if (typeof val==='string') {
+            this._selector = val;
+            return this.makeD3Element(d3.select(val));
+        }
+
+        if (typeof val==='object')
+            return val;
+
+        let msg = 'Not Supported element value type. value=' + val;
+
+        console.error({
+            message: msg,
+            value: val,
+            type_of: typeof val,
+            class_of: val.constructor.name
+        });
+
+        throw new Error(msg);
     }
     settingZoom (d3element) {
         let self = this;
@@ -30,9 +62,11 @@ export default class D3Svg {
         let zoom = d3.zoom()
             .on("zoom", function (event) { self.zoomed(event); });
 
-        d3element
-            .transition()
-            .call(zoom.scaleBy, this.camera().scale());
+        const transform = d3.zoomIdentity
+              .scale(this._transform.k)
+              .translate(this._transform.x, this._transform.y);
+
+        zoom.transform(d3element, transform);
 
         d3element.call(zoom);
 
@@ -71,29 +105,6 @@ export default class D3Svg {
 
         return d3element;
     }
-    makeD3Element (val) {
-        if (typeof val==='string') {
-            this._selector = val;
-            return this.makeD3Element(d3.select(val));
-        }
-
-        if (typeof val==='object')
-            return val;
-
-        let msg = 'Not Supported element value type. value=' + val;
-
-        console.error({
-            message: msg,
-            value: val,
-            type_of: typeof val,
-            class_of: val.constructor.name
-        });
-
-        throw new Error(msg);
-    }
-    /** *************************************************************** *
-     *  Layers
-     * **************************************************************** */
     /** *************************************************************** *
      * Accessor
      * **************************************************************** */
@@ -149,6 +160,10 @@ export default class D3Svg {
      * **************************************************************** */
     zoomed (event) {
         let transform = event.transform;
+
+        this._transform.k = transform.k;
+        this._transform.x = transform.x;
+        this._transform.y = transform.y;
 
         this.d3Element()
             .selectAll('g.layer')

@@ -43,7 +43,12 @@ export default function Asshole (props) {
         layers: [
             { id: 1, code: 'background' },
             { id: 2, code: 'foreground' },
-        ]
+        ],
+        transform: {
+            k: 0.5,
+            x: 0.0,
+            y: 0.0,
+        },
     }));
 
     useEffect(() => {
