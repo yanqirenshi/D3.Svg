@@ -4,3 +4,4 @@ documents/node_modules
 \#*\#
 .eslintcache
 .env
+documents/.env.location
